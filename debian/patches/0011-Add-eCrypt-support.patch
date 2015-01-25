@@ -1,0 +1,21 @@
+From: =?UTF-8?q?Carl=20F=C3=BCrstenberg?= <carl@excito.com>
+Date: Fri, 21 Oct 2011 15:38:18 +0200
+Subject: Add eCrypt support
+
+---
+ arch/arm/configs/bubba3_defconfig |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/arch/arm/configs/bubba3_defconfig b/arch/arm/configs/bubba3_defconfig
+index f551910..d53befe 100644
+--- a/arch/arm/configs/bubba3_defconfig
++++ b/arch/arm/configs/bubba3_defconfig
+@@ -580,6 +580,7 @@ CONFIG_FAT_DEFAULT_CODEPAGE=850
+ CONFIG_NTFS_FS=m
+ CONFIG_NTFS_RW=y
+ CONFIG_TMPFS=y
++CONFIG_ECRYPT_FS=m
+ CONFIG_HFS_FS=m
+ CONFIG_HFSPLUS_FS=m
+ CONFIG_NFS_FS=y
+-- 

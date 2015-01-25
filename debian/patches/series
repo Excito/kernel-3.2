@@ -1,0 +1,16 @@
+0001-Debian-adapted-version-handling.patch
+0002-Enable-usage-of-.kernelvariables.patch
+0003-Settings-for-marvell-88e1116.patch
+0004-Marvell-reverse-led-fix.patch
+0005-Excito-B3-config.patch
+0006-Ath-regd-optional.patch
+0007-vsc8601_and_clockskewfix.patch
+0008-Excito-Bubba-2-config.patch
+0009-Enable-kernel-options-to-make-iotop-work.patch
+0010-Enable-missing-modules-to-make-Strongswan-work.patch
+0011-Add-eCrypt-support.patch
+0012-Add-ebtables-support.patch
+0013-General-silentoldconfig-update-of-kernel-config.patch
+0014-Adding-support-for-NFS4-kernel-server.patch
+0015-Add-support-for-NFS41-kernel-client.patch
+0016-Add-CONFIG_USB_HIDDEV.patch
