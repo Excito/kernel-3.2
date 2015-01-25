@@ -1,14 +1,13 @@
 Format: http://dep.debian.net/deps/dep5
 Upstream-Name: linux
-Source: <url://example.com>
+Source: <http://www.kernel.org>
 
 Files: *
-Copyright: <years> <put author's name and email here>
-           <years> <likewise for another author>
 License: GPL-3.0+
 
 Files: debian/*
 Copyright: 2011 Carl Fürstenberg <azatoth@gmail.com>
+           2015 Charles Leclerc <leclerc.charles@gmail.com
 License: GPL-3.0+
 
 License: GPL-3.0+

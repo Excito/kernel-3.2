@@ -1,17 +1,6 @@
-From: =?UTF-8?q?Carl=20F=C3=BCrstenberg?= <azatoth@gmail.com>
-Date: Tue, 16 Aug 2011 15:04:31 +0200
-Subject: vsc8601_and_clockskewfix
-
----
- drivers/net/phy/Kconfig   |   11 ++++++--
- drivers/net/phy/vitesse.c |   53 +++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 61 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index 8988219..1a37f77 100644
 --- a/drivers/net/phy/Kconfig
 +++ b/drivers/net/phy/Kconfig
-@@ -48,9 +48,14 @@ config CICADA_PHY
+@@ -48,9 +48,14 @@
  	  Currently supports the cis8204
  
  config VITESSE_PHY
@@ -29,8 +18,6 @@ index 8988219..1a37f77 100644
  
  config SMSC_PHY
  	tristate "Drivers for SMSC PHYs"
-diff --git a/drivers/net/phy/vitesse.c b/drivers/net/phy/vitesse.c
-index 5d8f6e1..9eb0553 100644
 --- a/drivers/net/phy/vitesse.c
 +++ b/drivers/net/phy/vitesse.c
 @@ -26,6 +26,11 @@
@@ -38,14 +25,14 @@ index 5d8f6e1..9eb0553 100644
  #define MII_VSC8244_EXTCON1_RX_SKEW	0x0200
  
 +/* EXT_CON1 Register values for VSC8601 */
-+#define MII_VSC8601_EXTCON1_INIT       0x0000
-+#define MII_VSC8601_EXTCON1_SKEW       0x0100
-+#define MII_VSC8601_EXTCON1_ACTIPHY    0x0020
++#define MII_VSC8601_EXTCON1_INIT	0x0000
++#define MII_VSC8601_EXTCON1_SKEW	0x0100
++#define MII_VSC8601_EXTCON1_ACTIPHY	0x0020
 +
  /* Vitesse Interrupt Mask Register */
  #define MII_VSC8244_IMASK		0x19
  #define MII_VSC8244_IMASK_IEN		0x8000
-@@ -88,6 +93,30 @@ static int vsc824x_config_init(struct phy_device *phydev)
+@@ -98,6 +103,30 @@
  	return err;
  }
  
@@ -76,7 +63,7 @@ index 5d8f6e1..9eb0553 100644
  static int vsc824x_ack_interrupt(struct phy_device *phydev)
  {
  	int err = 0;
-@@ -143,6 +172,21 @@ static struct phy_driver vsc8244_driver = {
+@@ -153,6 +182,21 @@
  	.driver 	= { .owner = THIS_MODULE,},
  };
  
@@ -98,7 +85,7 @@ index 5d8f6e1..9eb0553 100644
  static int vsc8221_config_init(struct phy_device *phydev)
  {
  	int err;
-@@ -177,9 +221,17 @@ static int __init vsc82xx_init(void)
+@@ -187,9 +231,17 @@
  	err = phy_driver_register(&vsc8244_driver);
  	if (err < 0)
  		return err;
@@ -116,7 +103,7 @@ index 5d8f6e1..9eb0553 100644
  	return err;
  }
  
-@@ -187,6 +239,7 @@ static void __exit vsc82xx_exit(void)
+@@ -197,6 +249,7 @@
  {
  	phy_driver_unregister(&vsc8244_driver);
  	phy_driver_unregister(&vsc8221_driver);
@@ -124,4 +111,3 @@ index 5d8f6e1..9eb0553 100644
  }
  
  module_init(vsc82xx_init);
--- 

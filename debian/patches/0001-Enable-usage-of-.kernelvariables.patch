@@ -1,16 +1,6 @@
-From: =?UTF-8?q?Carl=20F=C3=BCrstenberg?= <azatoth@gmail.com>
-Date: Wed, 17 Aug 2011 16:30:12 +0200
-Subject: Enable usage of .kernelvariables
-
----
- Makefile |   62 ++++++++++++++++++++++++++++++--------------------------------
- 1 files changed, 30 insertions(+), 32 deletions(-)
-
-diff --git a/Makefile b/Makefile
-index 1b2a736..a9cc695 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -195,38 +195,6 @@ export KBUILD_BUILDHOST := $(SUBARCH)
+@@ -195,46 +195,6 @@
  ARCH		?= $(SUBARCH)
  CROSS_COMPILE	?= $(CONFIG_CROSS_COMPILE:"%"=%)
  
@@ -39,6 +29,14 @@ index 1b2a736..a9cc695 100644
 -       SRCARCH := sh
 -endif
 -
+-# Additional ARCH settings for tile
+-ifeq ($(ARCH),tilepro)
+-       SRCARCH := tile
+-endif
+-ifeq ($(ARCH),tilegx)
+-       SRCARCH := tile
+-endif
+-
 -# Where to locate arch specific headers
 -hdr-arch  := $(SRCARCH)
 -
@@ -49,7 +47,7 @@ index 1b2a736..a9cc695 100644
  KCONFIG_CONFIG	?= .config
  export KCONFIG_CONFIG
  
-@@ -346,6 +314,36 @@ CFLAGS_KERNEL	=
+@@ -354,6 +314,47 @@
  AFLAGS_KERNEL	=
  CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
  
@@ -68,6 +66,9 @@ index 1b2a736..a9cc695 100644
 +endif
 +
 +# Additional ARCH settings for sparc
++ifeq ($(ARCH),sparc32)
++       SRCARCH := sparc
++endif
 +ifeq ($(ARCH),sparc64)
 +       SRCARCH := sparc
 +endif
@@ -75,6 +76,14 @@ index 1b2a736..a9cc695 100644
 +# Additional ARCH settings for sh
 +ifeq ($(ARCH),sh64)
 +       SRCARCH := sh
++endif
++
++# Additional ARCH settings for tile
++ifeq ($(ARCH),tilepro)
++       SRCARCH := tile
++endif
++ifeq ($(ARCH),tilegx)
++       SRCARCH := tile
 +endif
 +
 +# Where to locate arch specific headers
@@ -86,4 +95,3 @@ index 1b2a736..a9cc695 100644
  
  # Use LINUXINCLUDE when you must reference the include/ directory.
  # Needed to be compatible with the O= option
--- 
