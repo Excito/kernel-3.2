@@ -32,7 +32,7 @@
  obj-$(CONFIG_CPU_IDLE)			+= cpuidle.o
 --- /dev/null
 +++ b/arch/arm/mach-kirkwood/bubba3-gpio.c
-@@ -0,0 +1,387 @@
+@@ -0,0 +1,404 @@
 +/*
 + * Excito BUBBA|3 led driver.
 + *
@@ -80,8 +80,12 @@
 +#define LED_BLUE	0
 +#define LED_RED		1
 +#define LED_GREEN	2
-+#define LED_BOOT	3
-+#define LED_INSTALL	LED_GREEN
++#define LED_CYAN	3
++#define LED_PURPLE	4
++#define LED_YELLOW	5
++#define LED_WHITE	6
++#define LED_BOOT	LED_PURPLE
++#define LED_ALT		LED_GREEN
 +
 +struct b3_stateinfo{
 +	u32 mode;
@@ -136,9 +140,22 @@
 +	gpio_set_value(B3_FRONT_LED_GREEN,0);
 +
 +	switch(color){
-+	case LED_BOOT:
++	case LED_PURPLE:
 +		gpio_set_value(B3_FRONT_LED_RED,1);
 +		gpio_set_value(B3_FRONT_LED_BLUE,1);
++		break;
++	case LED_YELLOW:
++		gpio_set_value(B3_FRONT_LED_RED,1);
++		gpio_set_value(B3_FRONT_LED_GREEN,1);
++		break;
++	case LED_CYAN:
++		gpio_set_value(B3_FRONT_LED_BLUE,1);
++		gpio_set_value(B3_FRONT_LED_GREEN,1);
++		break;
++	case LED_WHITE:
++		gpio_set_value(B3_FRONT_LED_BLUE,1);
++		gpio_set_value(B3_FRONT_LED_RED,1);
++		gpio_set_value(B3_FRONT_LED_GREEN,1);
 +		break;
 +	case LED_RED:
 +		gpio_set_value(B3_FRONT_LED_RED,1);
@@ -298,7 +315,7 @@
 +
 +	b3_data.color = simple_strtoul(buffer,NULL,0);
 +
-+	b3_data.color = (b3_data.color>LED_BOOT) ? LED_BOOT : b3_data.color;
++	b3_data.color = (b3_data.color>LED_WHITE) ? LED_WHITE : b3_data.color;
 +
 +	b3_led_color(b3_data.color);
 +
@@ -372,7 +389,7 @@
 +	b3_data.freq = LED_DEFAULT_FREQ;
 +	b3_data.buzz = BUZZ_OFF;
 +#ifdef CONFIG_BUBBA3_INSTALL
-+	b3_data.color = LED_INSTALL;
++	b3_data.color = LED_ALT;
 +#else
 +	b3_data.color = LED_BOOT;
 +#endif
