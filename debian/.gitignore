@@ -1,1 +1,10 @@
 !patches/*.patch
+build
+*.debhelper.log
+files
+*.substvars
+*.debhelper
+bubba3-kernel-headers-armel/*
+bubba3-kernel-headers-powerpc/*
+bubba3-kernel/*
+dts/*.dtb
