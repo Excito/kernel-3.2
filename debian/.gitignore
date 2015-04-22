@@ -8,3 +8,4 @@ bubba3-kernel-headers-armel/*
 bubba3-kernel-headers-powerpc/*
 bubba3-kernel/*
 dts/*.dtb
+bubba3-kernel.prerm

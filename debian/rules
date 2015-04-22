@@ -91,6 +91,7 @@ else ifeq ($(DEB_HOST_ARCH),powerpc)
 	$(call device_tree_compile, debian/dts/8313E21.dts)
 endif
 	+$(MAKE_CLEAN) -C $(SOURCE_DIR) modules
+	sed 's/@VERSION@/$(call REAL_VERSION)/g' < debian/bubba3-kernel.prerm.in > debian/bubba3-kernel.prerm
 
 
 override_dh_auto_install: SOURCE_DIR=$(BUILD_DIR)/source
@@ -145,6 +146,7 @@ endif
 
 override_dh_clean: SOURCE_DIR=$(BUILD_DIR)/source
 override_dh_clean:
+	rm -f debian/bubba3-kernel.prerm
 	rm -f debian/dts/*.dtb
 	rm -rf $(BUILD_DIR)
 	dh_clean $@
