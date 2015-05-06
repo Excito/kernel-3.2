@@ -26,7 +26,7 @@
  obj-$(CONFIG_MPC836x_MDS)	+= mpc836x_mds.o
 --- /dev/null
 +++ b/arch/powerpc/platforms/83xx/bubbatwo.c
-@@ -0,0 +1,496 @@
+@@ -0,0 +1,499 @@
 +/*
 + * Excito BUBBA|TWO driver.
 + *
@@ -117,29 +117,28 @@
 +
 +static void button_do_tasklet(struct work_struct *work)
 +{
-+	char *argv[2], **envp;
++	char *argv[4], **envp;
 +	int ret,i=0;
 +
 +	if(!b2_data.invoked){
 +		b2_data.invoked=1;
-+		b2_write_magic(BUBBA_MAGIC);
-+		argv[0] = "/sbin/reboot";
-+		argv[1] = NULL;
++		argv[0] = "/sbin/shutdown";
++		argv[1] = "-h";
++		argv[2] = "now";
++		argv[3] = NULL;
 +
 +		if (!(envp = (char **) kcalloc (20, sizeof (char *), GFP_KERNEL))) {
 +			printk(KERN_ERR  "BUBBATWO: failed to allocate memory");
-+		return;
-+	}
++			return;
++		}
 +
 +		/* minimal command environment */
 +		envp [i++] = "HOME=/";
 +		envp [i++] = "PATH=/sbin:/bin:/usr/sbin:/usr/bin";
 +		printk(KERN_DEBUG "BUBBATWO: Invoking usermodehelper");
-+		ret=call_usermodehelper (argv [0], argv, envp, 0);
++		ret=call_usermodehelper (argv[0], argv, envp, 0);
 +		kfree (envp);
-+		b2_led_blink(LED_DEFAULT_FREQ);
-+
-+	}else{
++	} else {
 +		printk(KERN_DEBUG "BUBBATWO: Already invoked reboot");
 +	}
 +}
@@ -341,6 +340,10 @@
 +
 +	b2_data.freq=simple_strtoul(buffer,NULL,0);
 +
++	if (b2_data.mode == 1) {
++		b2_led_blink (b2_data.freq);
++	}
++
 +	return size;
 +}
 +
@@ -533,7 +536,7 @@
  #define CONTROL_REFSEL_24MHZ       0x00000040
  #define CONTROL_REFSEL_48MHZ       0x00000080
  #define CONTROL_PHY_CLK_SEL_ULPI   0x00000400
-@@ -60,6 +61,60 @@
+@@ -60,11 +61,68 @@
  #define PORTSCX_PTS_UTMI           0x00000000
  #define PORTSCX_PTS_ULPI           0x80000000
  
@@ -594,6 +597,14 @@
  /*
   * Declaration for the various functions exported by the
   * mpc83xx_* files. Mostly for use by mpc83xx_setup
+  */
+ 
++#ifdef CONFIG_BUBBATWO
++extern void b2_halt(void);
++#endif
+ extern void mpc83xx_restart(char *cmd);
+ extern long mpc83xx_time_init(void);
+ extern int mpc837x_usb_cfg(void);
 --- a/arch/powerpc/platforms/83xx/usb.c
 +++ b/arch/powerpc/platforms/83xx/usb.c
 @@ -184,7 +184,7 @@
@@ -643,3 +654,40 @@
  	rc = sysfs_create_group(&client->dev.kobj, &isl1208_rtc_sysfs_files);
  	if (rc)
  		goto exit_unregister;
+--- a/arch/powerpc/platforms/83xx/mpc831x_rdb.c
++++ b/arch/powerpc/platforms/83xx/mpc831x_rdb.c
+@@ -86,6 +86,7 @@
+ 	of_platform_bus_probe(NULL, of_bus_ids, NULL);
+ 	return 0;
+ }
++
+ machine_device_initcall(mpc831x_rdb, declare_of_platform_devices);
+ 
+ define_machine(mpc831x_rdb) {
+@@ -95,6 +96,10 @@
+ 	.init_IRQ		= mpc831x_rdb_init_IRQ,
+ 	.get_irq		= ipic_get_irq,
+ 	.restart		= mpc83xx_restart,
++#ifdef CONFIG_BUBBATWO
++	.power_off		= b2_halt,
++	.halt			= b2_halt,
++#endif
+ 	.time_init		= mpc83xx_time_init,
+ 	.calibrate_decr		= generic_calibrate_decr,
+ 	.progress		= udbg_progress,
+--- a/arch/powerpc/platforms/83xx/misc.c
++++ b/arch/powerpc/platforms/83xx/misc.c
+@@ -30,6 +30,13 @@
+ 
+ arch_initcall(mpc83xx_restart_init);
+ 
++#ifdef CONFIG_BUBBATWO
++void b2_halt(void)
++{
++	mpc83xx_restart(NULL);
++}
++#endif
++
+ void mpc83xx_restart(char *cmd)
+ {
+ #define RST_OFFSET	0x00000900

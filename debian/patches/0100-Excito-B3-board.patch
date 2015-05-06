@@ -439,7 +439,7 @@
 +module_exit(bubba3_cleanup);
 --- /dev/null
 +++ b/arch/arm/mach-kirkwood/bubba3-setup.c
-@@ -0,0 +1,243 @@
+@@ -0,0 +1,248 @@
 +/*
 + * arch/arm/mach-kirkwood/bubba3-setup.c
 + * based on
@@ -465,9 +465,12 @@
 +#include <linux/input.h>
 +#include <linux/gpio_keys.h>
 +#include <asm/mach-types.h>
++#include <asm/io.h>
++#include <asm/proc-fns.h>
 +#include <asm/mach/arch.h>
 +#include <asm/mach/time.h>
 +#include <mach/kirkwood.h>
++#include <mach/system.h>
 +#include <mach/bridge-regs.h>
 +#include <plat/time.h>
 +#include "common.h"
@@ -662,6 +665,8 @@
 +	kirkwood_sata_init(&bubba3_sata_data);
 +
 +	kirkwood_ehci_init();
++
++	pm_power_off = arch_reset;
 +
 +}
 +
